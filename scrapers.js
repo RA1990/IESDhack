@@ -100,8 +100,9 @@
 // })();
 
 //////////////////////////////////////////////////////
-import dummy from './dataMaster/dummy.json';
+
 const puppeteer = require('puppeteer');
+let fs = require('fs');
 
 let scrape = async () => {
   const browser = await puppeteer.launch({ headless: false });
@@ -110,7 +111,7 @@ let scrape = async () => {
   await page.goto('https://www.nsnunlimited.com/nsn/manufacturer/bell-helicopter-textron-inc/');
 
   var results = []; // variable to hold collection of all book titles and prices
-  var lastPageNumber = 2; // this is hardcoded last catalogue page, you can set it dunamically if you wish
+  var lastPageNumber = 4; // this is hardcoded last catalogue page, you can set it dunamically if you wish
   // defined simple loop to iterate over number of catalogue pages
   for (let index = 0; index < lastPageNumber; index++) {
     // wait 1 sec for page load
@@ -121,10 +122,15 @@ let scrape = async () => {
     // this is where next button on page clicked to jump to another page
     if (index != lastPageNumber - 1) {
       // no next button on last page
-      await page.click('html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.row div.col-lg-6 div.pagination_top.main_paging.default.fixed02 ul.pagination.removespace li.right-etc a.test');
+      await page.click('html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.row div.col-lg-6 div.pagination_top.main_paging.default ul.pagination.removespace li.right-etc a.test');
     }
   }
-
+  let obj = {
+    bellHeliParts: []
+  };
+  obj.bellHeliParts.push(results);
+  let json = JSON.stringify(obj);
+  fs.writeFileSync('bell.json', json, 'utf8');
   browser.close();
   return results;
 };
