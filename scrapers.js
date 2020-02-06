@@ -107,7 +107,7 @@ let fs = require('fs');
 let scrape = async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-
+  page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0');
   await page.goto('https://www.nsnunlimited.com/nsn/manufacturer/bell-helicopter-textron-inc/');
 
   var results = []; // variable to hold collection of all book titles and prices
