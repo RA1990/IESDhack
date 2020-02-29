@@ -120,10 +120,10 @@ let scrape = async () => {
     // You can use results.push, but will get collection of collections at the end of iteration
     results = results.concat(await extractedEvaluateCall(page));
     // this is where next button on page clicked to jump to another page
-    if (index != lastPageNumber - 1) {
-      // no next button on last page
-      await page.click('html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.row div.col-lg-6 div.pagination_top.main_paging.default ul.pagination.removespace li.right-etc a.test');
-    }
+    // if (index != lastPageNumber - 1) {
+    //   // no next button on last page
+    //   await page.click('html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.row div.col-lg-6 div.pagination_top.main_paging.default ul.pagination.removespace li.right-etc a.test');
+    // }
   }
   let obj = {
     infoToJack: []
