@@ -108,7 +108,7 @@ let scrape = async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0');
-  await page.goto('https://www.nsnunlimited.com/nsn/manufacturer/bell-helicopter-textron-inc/');
+  await page.goto('https://calscape.org/loc-Riverside,CA/cat-All-Plants/ord-popular/page-1/np-0?&srchcr=sc5e5aacc0658fd');
 
   var results = []; // variable to hold collection of all book titles and prices
   var lastPageNumber = 4; // this is hardcoded last catalogue page, you can set it dunamically if you wish
@@ -126,11 +126,11 @@ let scrape = async () => {
     }
   }
   let obj = {
-    bellHeliParts: []
+    infoToJack: []
   };
-  obj.bellHeliParts.push(results);
+  obj.infoToJack.push(results);
   let json = JSON.stringify(obj);
-  fs.writeFileSync('bell.json', json, 'utf8');
+  fs.writeFileSync('infojack.json', json, 'utf8');
   browser.close();
   return results;
 };
@@ -140,20 +140,15 @@ async function extractedEvaluateCall(page) {
   // this function should use async keyword in order to work and take page as argument
   return page.evaluate(() => {
     let data = [];
-    let elements = document.querySelectorAll('tbody tr');
+    let elements = document.querySelectorAll('.pad');
 
     for (var element of elements) {
 
-      let partNum = element.querySelector(`html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.part_list table.table.table-bordered tbody tr td a.part-no-link span`).innerText.trim()
-      let nsn = element.querySelector(`html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.part_list table.table.table-bordered tbody tr td.hidden-xs`).innerText.trim()
-      let itemName = element.querySelector(`html body section.white_content div.container-fluid div.container div.row div.col-lg-9.rhs div.content_section.content_section2 div.part_list table.table.table-bordered tbody tr td.hidden-xs span.table-desc-text.capitalize`).innerText.trim()
+      let info = element.querySelector(`.common_name`).innerText.trim()
 
       data.push(
         {
-          partNum,
-          nsn,
-          itemName
-
+         info
         });
     }
 
